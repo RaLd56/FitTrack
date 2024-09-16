@@ -1,3 +1,3 @@
-from .utils import ProductSearchSession
+# from .utils import ProductSearchSession
 
-product_search_session = ProductSearchSession()
+# product_search_session = ProductSearchSession()

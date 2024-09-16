@@ -11,9 +11,9 @@ from django.http import JsonResponse
 from django.db.models import Sum
 from datetime import timedelta, datetime
 from .forms import CustomUserCreationForm, CustomLoginForm, AddWorkoutForm, ExerciseSearchForm, WorkoutForm, AddUsersMealForm
-from .utils import send_verification_email, ProductSearchSession, calculate_totals
+from .utils import send_verification_email, calculate_totals
 from .models import EmailVerification, MealLog, Workout, Exercise, ExercisePerformance, SetPerformance, UsersMeal, WorkoutSession, UserStats, Goal, CalorieGoal
-from .search_session import product_search_session
+#from .search_session import product_search_session
 import re
 import json
 
