@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+    <title>Тренировка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+
+  <body
+    class="relative flex min-h-screen flex-col bg-[#111a22] justify-between overflow-x-hidden"
+    style='font-family: Lexend, "Noto Sans", sans-serif;'
+  >
+    <div class="flex items-center bg-[#111a22] p-4 pb-1 justify-between">
+      <div onclick="window.location.href='{% url 'workouts' %}'" class="text-white flex size-12 shrink-0 items-center" data-icon="X" data-size="24px" data-weight="regular">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+          ></path>
+        </svg>
+      </div>
+      <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Тренировка</h2>
+    </div>
+
+    <div style='margin-top: -75vh;' class="px-4 text-white mt-1">
+      <p>Отслеживайте свой прогресс в упражнениях, заполняя количество повторений и вес. Если вы выполняете упражнение без веса, оставьте поле "Вес" с значением 0.</p>
+    </div>
+
+    <form method="post" class="px-4 space-y-4 mt-2">
+      {% csrf_token %}
+      <div style='margin-top: -75vh;' class="flex flex-col">
+        <label class="text-white text-base font-medium pb-1">Упражнение</label>
+        {{ form.exercise_name }}
+      </div>
+      <div class="flex flex-col min-w-40 flex-1">
+          <p class="text-white text-base font-medium leading-normal pb-1">Повторения/Продолжительность, с</p>
+          {{ form.repetitions }}
+      </div>
+      <div class="flex flex-col min-w-40 flex-1">
+          <p class="text-white text-base font-medium leading-normal pb-1">Вес</p>
+          {{ form.weight }}
+      </div>
+  
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          name="next_set"
+          class="flex items-center justify-center w-full h-12 px-5 bg-[#1466b8] text-white font-bold rounded-full"
+        >
+          Следующий подход
+        </button>
+      </div>
+  
+      <!-- Кнопка "Завершить тренировку" -->
+      <div class="flex mt-4">
+        <button
+        type="submit"
+        name="finish_workout"
+        class="flex items-center justify-center w-full h-12 px-5 bg-[#243647] text-white font-bold rounded-full"
+    >
+        Завершить тренировку
+    </button>
+      </div>
+  </form>
+  
+      
+  </body>
+</html>

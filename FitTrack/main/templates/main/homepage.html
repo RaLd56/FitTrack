@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>FitTrack</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      #desktop-warning {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: #ffcc00;
+        color: #111922;
+        text-align: center;
+        font-family: Lexend, "Noto Sans", sans-serif;
+        z-index: 9999;
+      }
+      
+      @media screen and (max-width: 768px) {
+        #desktop-warning {
+          display: none !important;
+        }
+      }
+    </style>
+  
+    <script>
+      
+      function checkDevice() {
+        var isMobile = /iPhone|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+        var screenWidth = window.innerWidth;
+  
+        
+        if (!isMobile && screenWidth > 768) {
+          document.getElementById("desktop-warning").style.display = "block";
+        }
+      }
+  
+      
+      window.onload = checkDevice;
+    </script>
+  </head>
+  <body>
+    <div id="desktop-warning">
+      Мы рекомендуем использовать мобильное устройство для корректного отображения интерфейса.
+    </div>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#111922] dark group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+      <div class="flex items-center bg-[#111922] p-4 pb-2 justify-between">
+        <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1">FitTrack</h2>
+      </div>
+      <div class="@container">
+        <div class="@[480px]:px-4 @[480px]:py-3">
+          <div
+            class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#111922] @[480px]:rounded-xl min-h-[218px]"
+            style='background-image: url("https://cdn.usegalileo.ai/stability/ffb7bde6-2bc5-4743-9e85-572b1a13314a.png");'
+          ></div>
+        </div>
+      </div>
+      <h2 class="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Присоединяйтесь к миллионам тех, кто заботится о своем теле</h2>
+      <div class="flex px-4 py-3">
+        <a
+        href="{% url 'sign_up' %}"
+        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#1979e6] text-white text-base font-bold leading-normal tracking-[0.015em] no-underline"
+      >
+        <span class="truncate">Начать</span>
+      </a>
+      
+      </div>
+      <a href="{% url 'sign_in' %}">
+      <div class="flex items-center gap-4 bg-[#111922] px-4 min-h-14 justify-between">
+        <p class="text-white text-base font-normal leading-normal flex-1 truncate">Войти</p>
+        <div class="shrink-0">
+        </a>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 bg-[#111922] px-4 min-h-14 justify-between">
+        <a href="{% url 'about' %}">
+        <p class="text-white text-base font-normal leading-normal flex-1 truncate">О нас</p>
+      </a>
+        <div class="shrink-0">
+          <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 bg-[#111922] px-4 min-h-14 justify-between">
+        <a href="{% url 'contacts' %}">
+        <p class="text-white text-base font-normal leading-normal flex-1 truncate">Контакты</p>
+      </a>
+        <div class="shrink-0">
+          <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="h-5 bg-[#111922]"></div>
+    </div>
+  </body>
+</html>

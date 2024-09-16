@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Питание сегодня</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#111922] dark group/design-root overflow-x-hidden"
+      style='font-family: Lexend, "Noto Sans", sans-serif;'
+    >
+      <div>
+        <div class="flex items-center bg-[#111922] p-4 pb-2 justify-between">
+          <div onclick="window.location.href='{% url 'nutrition' %}'" class="text-[#FFFFFF] flex size-12 shrink-0 items-center" data-icon="ArrowLeft" data-size="24px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+            </svg>
+          </div>
+          <h2 class="text-[#FFFFFF] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Добавленные блюда</h2>
+        </div>
+        {% if todays_meals %}
+    {% for meal in todays_meals %}
+    <div class="flex items-center gap-4 bg-[#111922] px-4 min-h-[72px] py-2 justify-between">
+        <div class="flex flex-col justify-center">
+            <p class="text-[#FFFFFF] text-base font-medium leading-normal line-clamp-1">{{ meal.meal_name }}</p>
+            <p class="text-[#7C8492] text-sm font-normal leading-normal line-clamp-2">{{ meal.meal_nutrition }}, {{ meal.quantity }}г </p>
+        </div>
+        <div class="shrink-0">
+            <div class="text-[#FFFFFF] flex size-7 items-center justify-center cursor-pointer" onclick="deleteMeal({{ meal.id }})" data-icon="X" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                        d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+                    ></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div style="text-align: center;" class="flex flex-col justify-center p-4 bg-[#223749] rounded-lg text-white">Вы пока не добавили ни одного блюда</div>
+{% endif %}
+         
+      <div>
+        <div class="flex px-4 py-3">
+          <button
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#1979e6] text-[#FFFFFF] gap-2 pl-5 text-base font-bold leading-normal tracking-[0.015em]"
+          >
+            <div class="text-[#FFFFFF]" data-icon="Plus" data-size="24px" data-weight="regular">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+              </svg>
+            </div>
+            <span onclick="window.location.href='{% url 'add_meal' %}'" class="truncate">Добавить блюдо</span>
+          </button>
+        </div>
+        <div class="h-5 bg-[#111922]"></div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+    function deleteMeal(mealId) {
+        if (!confirm("Вы уверены, что хотите удалить это блюдо?")) {
+            return;
+        }
+
+        fetch(`/delete_meal/${mealId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                const mealElement = document.querySelector(`div[data-meal-id="${mealId}"]`);
+                if (mealElement) {
+                    mealElement.remove();
+                }
+                window.location.reload();
+            } else {
+                alert("Ошибка при удалении блюда. Попробуйте еще раз.");
+            }
+        });
+    }
+</script>
+

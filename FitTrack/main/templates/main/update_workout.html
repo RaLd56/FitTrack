@@ -1,0 +1,138 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Изменить тренировку</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#111a22] dark justify-between group/design-root overflow-x-hidden"
+      style='font-family: Lexend, "Noto Sans", sans-serif;'
+    >
+      <div>
+        <div class="flex items-center bg-[#111a22] p-4 pb-2 justify-between">
+          <div onclick="window.location.href='{% url 'workouts' %}'" class="text-white flex size-12 shrink-0 items-center" data-icon="X" data-size="24px" data-weight="regular">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+              ></path>
+            </svg>
+          </div>
+          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Упражнения</h2>
+          <div class="flex w-12 items-center justify-end cursor-pointer">
+            <a href="{% url 'delete_workout' day %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded flex items-center justify-center"
+               onclick="return confirmDeletion()">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1l-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+              </svg>
+            </a>
+          </div>
+
+          <script>
+            function confirmDeletion() {
+              return confirm('Вы действительно хотите удалить тренировку?');
+            }
+          </script>
+        
+        </div>
+        <div onclick="window.location.href='{% url 'search_exercise' day %}'" class="flex items-center gap-4 bg-[#111a22] px-4 min-h-[72px] py-2 justify-between">
+          <div class="flex flex-col justify-center">
+            <p class="text-white text-base font-medium leading-normal line-clamp-1">Добавить упражнение</p>
+            <p class="text-[#93adc8] text-sm font-normal leading-normal line-clamp-2">Выберите из списка</p>
+          </div>
+          <div class="shrink-0">
+            <div class="text-white flex size-7 items-center justify-center" data-icon="Plus" data-size="24px" data-weight="regular">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Добавленные упражнения</h3>
+        {% for exercise_name, muscle_group in exercises_with_muscle_groups %}
+        <div class="flex gap-4 bg-[#111a22] px-4 py-3 justify-between">
+          <div class="flex flex-1 flex-col justify-center">
+            <p class="text-white text-base font-medium leading-normal">{{ exercise_name }}</p>
+            <p class="text-[#93adc8] text-sm font-normal leading-normal">{{ muscle_group }}</p>
+          </div>
+          <div class="shrink-0">
+            <button onclick="deleteExercise({{ forloop.counter0 }}, 'chosen')" class="text-white flex size-7 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+        
+        {% for exercise in users_exercises %}
+        <div class="flex gap-4 bg-[#111a22] px-4 py-3 justify-between">
+          <div class="flex flex-1 flex-col justify-center">
+            <p class="text-white text-base font-medium leading-normal">{{ exercise.name }}</p>
+          </div>
+          <div class="shrink-0">
+            <button onclick="deleteExercise({{ forloop.counter0 }}, 'user')" class="text-white flex size-7 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+        
+</div>
+<div>
+  <div class="flex px-4 py-3">
+    <button onclick="window.location.href='{% url 'log_workout' day %}'"
+      class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#1466b8] text-white text-base font-bold leading-normal tracking-[0.015em]"
+    >
+      <span class="truncate">Начать тренировку</span>
+    </button>
+  </div>
+  <div class="h-5 bg-[#111a22]"></div>
+</div>
+</body>
+<script>
+function deleteExercise(index, type) {
+  if (confirm('Вы действительно хотите удалить это упражнение?(Ваш прогресс в рамках этой тренировки также будет удален)')) {
+    // Получите URL для удаления, передав индекс элемента и тип упражнения
+    const url = `{% url 'delete_exercise' day %}?index=${index}&type=${type}`;
+
+    // Отправьте запрос на сервер
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        // Обновите страницу или удалите элемент из DOM
+        location.reload();
+      } else {
+        alert('Ошибка удаления');
+      }
+    })
+    .catch(error => {
+      console.error('Ошибка:', error);
+    });
+  }
+}
+
+</script>
+
+  
+</html>
+

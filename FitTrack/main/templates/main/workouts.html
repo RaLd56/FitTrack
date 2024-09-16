@@ -1,0 +1,48 @@
+{% extends 'main/layout.html' %}
+{% load custom_filters %}
+{% block title %}Тренировки{% endblock %}
+{% block content %}
+    <div class="relative flex size-full flex-col bg-[#131416] dark justify-between group/design-root overflow-x-hidden"
+         style='font-family: Epilogue, "Noto Sans", sans-serif;'>
+        <div>
+            <!-- Header -->
+            <div class="flex items-center bg-[#131416] p-4 pb-2 justify-between">
+                <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pl-12 pr-12">Ваши тренировки</h2>
+            </div>
+
+            <!-- Schedule for the week -->
+            {% for day in days_of_week %}
+                <div class="flex items-center gap-4 bg-[#131416] px-4 min-h-[72px] py-2 justify-between">
+                    <div class="flex items-center gap-4">
+                        <div onclick="window.location.href='{% url 'log_workout' day %}'" class="text-white flex items-center justify-center rounded-lg bg-[#2d3134] shrink-0 size-12" data-icon="Clock" data-size="24px" data-weight="regular">
+                            <svg width="512" height="512" viewBox="0 0 512 512" style="color:currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 256 256" fill="currentColor" x="128" y="128" role="img" style="display:inline-block;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path fill="currentColor" d="M248 122h-10V88a14 14 0 0 0-14-14h-18V64a14 14 0 0 0-14-14h-24a14 14 0 0 0-14 14v58h-52V64a14 14 0 0 0-14-14H64a14 14 0 0 0-14 14v10H32a14 14 0 0 0-14 14v34H8a6 6 0 0 0 0 12h10v34a14 14 0 0 0 14 14h18v10a14 14 0 0 0 14 14h24a14 14 0 0 0 14-14v-58h52v58a14 14 0 0 0 14 14h24a14 14 0 0 0 14-14v-10h18a14 14 0 0 0 14-14v-34h10a6 6 0 0 0 0-12ZM32 170a2 2 0 0 1-2-2V88a2 2 0 0 1 2-2h18v84Zm58 22a2 2 0 0 1-2 2H64a2 2 0 0 1-2-2V64a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2Zm104 0a2 2 0 0 1-2 2h-24a2 2 0 0 1-2-2V64a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2Zm32-24a2 2 0 0 1-2 2h-18V86h18a2 2 0 0 1 2 2Z"/></g></svg></svg>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <p class="text-white text-base font-medium leading-normal line-clamp-1">{{ day }}</p>
+                            <p class="text-[#a5abb1] text-sm font-normal leading-normal line-clamp-2">
+                                {% if workouts_by_day|get_item:day %}
+                                    {% with workout=workouts_by_day|get_item:day %}
+                                        {{ workout.get_workout_type_display }}, {{ workout.workout_length }} минут
+                                    {% endwith %}
+                                {% else %}
+                                    Нет тренировки
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="shrink-0">
+                        {% if workouts_by_day|get_item:day %}
+                            <a href="{% url 'update_workout' day %}" class="text-white flex size-7 items-center justify-center" data-icon="Plus" data-size="24px" data-weight="regular">
+                                <svg width="512" height="512" viewBox="0 0 512 512" style="color:currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img" style="display:inline-block;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.333 16.048L16.57 3.81a2.56 2.56 0 0 1 3.62 3.619L7.951 19.667a2 2 0 0 1-1.022.547L3 21l.786-3.93a2 2 0 0 1 .547-1.022Z"/><path d="m14.5 6.5l3 3"/></g></g></svg></svg>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'add_workout' day %}" class="text-white flex size-7 items-center justify-center" data-icon="Plus" data-size="24px" data-weight="regular">
+                                <svg width="512" height="512" viewBox="0 0 512 512" style="color:currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img" style="display:inline-block;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 8v4m0 0v4m0-4h4m-4 0H8"/><circle cx="12" cy="12" r="10"/></g></g></svg></svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

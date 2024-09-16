@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Подтверждение</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#101418] dark group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
+      <div class="flex items-center bg-[#101418] p-4 pb-2 justify-between">
+
+            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1">FitTrack</h2>
+
+      </div>
+      <div class="@container">
+        <div class="@[480px]:px-4 @[480px]:py-3">
+          <div
+            class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#101418] @[480px]:rounded-xl min-h-80"
+            style='background-image: url("https://cdn.usegalileo.ai/sdxl10/c2d14eb0-add7-4338-922d-f2e4b927ba6c.png");'
+          ></div>
+        </div>
+      </div>
+      <h2 class="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Добро пожаловать в FitTrack!</h2>
+      <p class="text-white text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
+        Вам на почту было отправлено сообщение. Проверьте входящие и введите код-подтверждение
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <input type="text" name="code" placeholder="Enter your verification code" required style="width: 100%; height: 45px; padding: 0 15px; border-radius: 8px; border: 1px solid lightgrey; font-size: 16px; transition: border-color 0.3s ease, box-shadow 0.3s ease; margin-bottom: 10px">
+        </div>
+        <div class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#f0f2f5] text-[#111518] text-base font-bold leading-normal tracking-[0.015em]"
+        >
+          <input type="submit" value="Подтвердить">
+        </div>
+        {% if error %}
+          <p>{{ error }}</p>
+        {% endif %}
+        <div class="flex justify-center">
+          <button
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#27303a] text-white text-base font-bold leading-normal tracking-[0.015em] grow"
+          >
+            <span class="truncate">Отправить еще раз</span>
+          </button>
+        </div>
+    </form>
+
+      <p class="text-[#9aabbc] text-sm font-normal leading-normal pb-3 pt-1 px-4">Это поможет защитить ваш аккаунт.</p>
+      <div class="h-5 bg-[#101418]"></div>
+    </div>
+  </body>
+</html>
+
+
+

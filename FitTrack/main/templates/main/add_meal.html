@@ -1,0 +1,199 @@
+{% extends 'main/layout.html' %}
+{% block title %}Питание{% endblock %}
+{% block content %}
+<div class="container mx-auto p-4">
+    
+    <form method="GET" action="{% url 'search' %}" class="mb-6">
+        <div class="flex items-center">
+          <input type="text" name="query" class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-l-lg focus:outline-none focus:border-blue-500" placeholder="Найти блюдо...">
+          <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded-r-lg hover:bg-blue-700 focus:outline-none">Поиск</button>
+        </div>
+    </form>
+  
+    <!-- Recent Dishes -->
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold text-white mb-4">Последние введенные блюда</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% if recent_meals %}
+        {% for recent_meal in recent_meals %}
+        <div class="p-4 bg-[#223749] rounded-lg text-white">{{ recent_meal.meal_name }}</div>
+        {% endfor %}
+        {% else %}
+        <div class="p-4 bg-[#223749] rounded-lg text-white">Вы пока не добавили ни одного блюда</div>
+        {% endif %}
+      </div>
+    </div>
+  
+    <div>
+      <h2 class="text-lg font-semibold text-white mb-4">Ваши блюда</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% if users_meals %}
+        {% for users_meal in users_meals %}
+        <div class="meal-item">
+        <div class="p-4 bg-[#223749] rounded-lg text-white relative meal-item">
+          <span class="meal-name">{{ users_meal.name }}</span>
+          <button style="margin-top:1vh" class="absolute top-2 right-2 text-white delete-meal">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+          <button style="margin-right: 5vh; margin-top: 0vh" class="absolute top-2 right-2 text-red-500 hover:text-red-700 log-meal-btn">
+            <svg class="w-80 h-9" fill="none" stroke="currentColor" viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+        {% endfor %}
+        {% else %}
+        <div class="p-4 bg-[#223749] rounded-lg text-white">Вы пока не добавили ни одного пользовательского блюда</div>
+        {% endif %}
+        <button id="openModalButton" class="inline-block mt-4 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
+          Добавить пользовательское блюдо
+        </button>
+      </div>
+    </div>
+    
+    
+    
+    
+  </div>
+
+  <div id="logMealModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-2xl font-semibold mb-6">Логировать количество блюда</h2>
+      <form method="POST" action="{% url 'log_users_meal' %}">
+        {% csrf_token %}
+        <!-- Скрытое поле для имени блюда -->
+        <input type="hidden" name="meal_name" id="meal_name">
+        
+        <div class="mb-4">
+          <label for="quantity" class="block text-sm font-medium text-gray-700">Количество (г)</label>
+          <input type="number" name="quantity" id="quantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
+        
+        <div class="flex justify-end gap-4">
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none">Сохранить</button>
+          <button type="button" id="closeLogMealModalButton" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    const logMealModal = document.getElementById('logMealModal');
+    const closeLogMealModalButton = document.getElementById('closeLogMealModalButton');
+    
+    // Открытие модального окна для логирования блюда
+    document.querySelectorAll('.log-meal-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const mealItem = e.currentTarget.closest('.meal-item');
+    
+    // Извлекаем текст из элемента с классом .meal-name
+    const mealName = mealItem.querySelector('.meal-name').innerText;
+        document.getElementById('meal_name').value = mealName; 
+        console.log(mealName)
+        logMealModal.classList.remove('hidden');
+      });
+    });
+  
+    // Закрытие модального окна
+    closeLogMealModalButton.addEventListener('click', () => {
+      logMealModal.classList.add('hidden');
+    });
+  
+    window.addEventListener('click', (e) => {
+      if (e.target === logMealModal) {
+        logMealModal.classList.add('hidden');
+      }
+    });
+  </script>
+
+  <!-- Модальное окно -->
+  <div id="customMealModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-2xl font-semibold mb-6">Добавить пользовательское блюдо</h2>
+      <form method="POST" action="{% url 'add_custom_meal' %}">
+        {% csrf_token %}
+        <div class="mb-4">
+          <label for="id_name" class="block text-sm font-medium text-gray-700">Название блюда</label>
+          <input type="text" name="name" id="id_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="{{ form.name.value|default:'' }}">
+        </div>
+        <div class="mb-4">
+          <label for="id_proteins" class="block text-sm font-medium text-gray-700">Белки (г)</label>
+          <input type="text" name="proteins" id="id_proteins" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="{{ form.proteins.value|default:'' }}">
+        </div>
+        <div class="mb-4">
+          <label for="id_carbohydrates" class="block text-sm font-medium text-gray-700">Углеводы (г)</label>
+          <input type="text" name="carbohydrates" id="id_carbohydrates" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="{{ form.carbohydrates.value|default:'' }}">
+        </div>
+        <div class="mb-4">
+          <label for="id_fats" class="block text-sm font-medium text-gray-700">Жиры (г)</label>
+          <input type="text" name="fats" id="id_fats" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="{{ form.fats.value|default:'' }}">
+        </div>
+        <div class="mb-6">
+          <label for="id_calories" class="block text-sm font-medium text-gray-700">Калории</label>
+          <input type="text" name="calories" id="id_calories" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="{{ form.calories.value|default:'' }}">
+        </div>
+        <div class="flex justify-end gap-4">
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none">Сохранить</button>
+          <button type="button" id="closeModalButton" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('customMealModal');
+    const openModalButton = document.getElementById('openModalButton');
+    const closeModalButton = document.getElementById('closeModalButton');
+  
+    openModalButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+  
+    closeModalButton.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.delete-meal').forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const mealItem = e.target.closest('.meal-item');
+      const mealName = mealItem.querySelector('.meal-name').textContent.trim();
+      console.log('Meal Name:', mealName); // Debugging line
+
+      if (confirm('Вы уверены, что хотите удалить это блюдо?')) {
+        try {
+          const response = await fetch(`/delete_meal/${encodeURIComponent(mealName)}/`, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'Content-Type': 'application/json',
+            }
+          });
+          if (response.ok) {
+            mealItem.remove(); // Remove the meal element from the DOM
+          } else {
+            alert('Не удалось удалить блюдо.');
+          }
+        } catch (error) {
+          alert('Произошла ошибка при удалении блюда.');
+        }
+      }
+    });
+  });
+});
+
+
+  </script>
+{% endblock %}
+
+
+

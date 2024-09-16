@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Результаты поиска</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body class="bg-[#182734] h-screen flex flex-col">
+
+    <div class="container">
+        <div class="flex items-center mb-4">
+            <!-- Back button -->
+            <a href="{% url 'add_meal' %}" style="margin-left: 20px; margin-top: 20px" class="text-[#1979e6] hover:text-[#145aa0] flex items-center mr-4">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                  </svg>                  
+            </a>
+
+            <!-- Heading -->
+            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+                Результаты для "{{ query }}"
+            </h2>
+        </div>
+
+        {% if results == 404 %}
+            <div class="p-2 mb-2 bg-[#182734] rounded-lg text-white">
+                <h3 class="text-lg font-semibold">Блюдо не найдено, попробуйте добавить свое</h3>
+            </div>
+        {% else %}
+        {% for meal in results %}
+        <div class="flex items-center gap-4 bg-[#131416] px-4 min-h-[72px] py-2 justify-between">
+            <div class="flex flex-col justify-center">
+                <p id='meal-name' class="text-white text-base font-medium leading-normal line-clamp-1">{{ meal.name }}</p>
+                <p id='meal-nutrition' class="text-[#a5abb1] text-sm font-normal leading-normal line-clamp-2">{{ meal.nutrition }}</p>
+            </div>
+            <div class="shrink-0">
+                <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-4 bg-[#1979e6] text-white text-sm font-medium leading-normal w-fit"
+                onclick="openModal('{{ meal.name }}', '{{ meal.nutrition }}')"
+                >
+                    <span class="truncate">Добавить</span>
+                </button>
+            </div>
+        </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Modal -->
+        <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-[#2d3134] p-4 rounded-lg">
+                <h3 class="text-white text-lg font-bold mb-4">Укажите количество(граммы)</h3>
+                <form id="modal-form">
+                    <input type="number" id="quantity" class="w-full mb-4 p-2 rounded bg-[#3a3f42] text-white" placeholder="Количество">
+                    <button type="submit" class="w-full bg-[#4b5563] text-white py-2 rounded">Сохранить</button>
+                </form>
+                <button onclick="closeModal()" class="absolute top-2 right-2 text-white">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(mealName, mealNutrition) {
+
+    document.getElementById('modal').classList.remove('hidden');
+
+
+    document.getElementById('meal-name').value = mealName;
+    document.getElementById('meal-nutrition').value = mealNutrition;
+}
+
+document.getElementById('modal-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const mealName = document.getElementById('meal-name').value;
+    const mealNutrition = document.getElementById('meal-nutrition').value;
+    const quantity = document.getElementById('quantity').value;
+
+    fetch("{% url 'log_meal' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}", 
+        },
+        body: JSON.stringify({
+            meal_name: mealName,
+            meal_nutrition: mealNutrition,
+            quantity: quantity,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeModal(); 
+        } else {
+            alert("Ошибка при сохранении записи. Попробуйте еще раз.");
+        }
+    });
+});
+
+function closeModal() {
+        document.getElementById('modal').classList.add('hidden');
+    }
+    </script>
+</body>
+</html>
