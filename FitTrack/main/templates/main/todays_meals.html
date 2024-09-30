@@ -51,9 +51,9 @@
 {% endif %}
          
       <div>
-        <div class="flex px-4 py-3">
+        <div class="flex px-4 py-3 justify-center add_meal_btn">
           <button
-            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#1979e6] text-[#FFFFFF] gap-2 pl-5 text-base font-bold leading-normal tracking-[0.015em]"
+            class="transition duration-250 hover:bg-[#1359b3] focus:bg-[#1359b3] flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#1979e6] text-[#FFFFFF] gap-2 pl-5 text-base font-bold leading-normal tracking-[0.015em]"
           >
             <div class="text-[#FFFFFF]" data-icon="Plus" data-size="24px" data-weight="regular">
               <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
@@ -63,7 +63,14 @@
             <span onclick="window.location.href='{% url 'add_meal' %}'" class="truncate">Добавить блюдо</span>
           </button>
         </div>
-        <div class="h-5 bg-[#111922]"></div>
+        <style>
+          @media (max-width:480px){
+            .add_meal_btn{
+              bottom: auto;
+            }
+          }
+            
+        </style>
       </div>
     </div>
   </body>

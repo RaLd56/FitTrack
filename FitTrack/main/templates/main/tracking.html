@@ -9,21 +9,21 @@
         <div class="flex items-center bg-[#101a23] p-4 pb-2 justify-between">
           <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pl-12 pr-12">Обзор</h2>
         </div>
-        <div class="flex flex-wrap gap-4 p-4">
-          <div onclick="window.location.href='{% url 'nutrition' %}'" class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
+        <div class="flex flex-wrap gap-4 p-4 ">
+          <div onclick="window.location.href='{% url 'nutrition' %}'" class="tracking_txt transition duration-250 hover:bg-[#1b2d3d] focus:bg-[#1b2d3d] flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
             <p class="text-white text-base font-medium leading-normal">Потребление кКал</p>
             <p class="text-[#90afcb] text-sm font-normal leading-normal line-clamp-2">{{ totals.total_calories }}</p>
           </div>
-          <div onclick="window.location.href='{% url 'workouts' %}'" class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
+          <div onclick="window.location.href='{% url 'workouts' %}'" class=" tracking_txt transition duration-250 hover:bg-[#1b2d3d] focus:bg-[#1b2d3d] flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
             <p class="text-white text-base font-medium leading-normal">Ближайшая тренировка</p>
             <p class="text-[#90afcb] text-sm font-normal leading-normal line-clamp-2">{{ closest_workout_display }}</p>
           </div>
-          <div onclick="window.location.href='{% url 'set_parameters' %}'" class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
+          <div onclick="window.location.href='{% url 'set_parameters' %}'" class="tracking_txt transition duration-250 hover:bg-[#1b2d3d] focus:bg-[#1b2d3d] flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
             <p class="text-white text-base font-medium leading-normal">Общие показатели</p>
             <p class="text-[#90afcb] text-sm font-normal leading-normal line-clamp-2">Нажмите, чтобы записать</p>
           </div>
-          <div onclick="window.location.href='{% url 'add_goal' %}'" class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
-            <p class="text-white text-base font-medium leading-normal">Текущая цель:</p>
+          <div onclick="window.location.href='{% url 'add_goal' %}'" class="tracking_txt transition duration-250 hover:bg-[#1b2d3d] focus:bg-[#1b2d3d] flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#223749] cursor-pointer">
+            <p class="text-white text-base font-medium leading-normal">Текущая цель</p>
             {% if goal %}
             <p class="text-[#90afcb] text-sm font-normal leading-normal line-clamp-2">{{ goal.get_type_display }}</p>
             {% else %}
@@ -31,9 +31,21 @@
             {% endif %}
           </div>
         </div>
-        <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">История питания</h2>
-        <div style=" max-width: 100%; height: 40vh;">
-          <canvas id="caloriesChart" style="min-width: 60vw; max-width: 1200px;"></canvas>
+        <h2 class="history_eat text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">История питания</h2>
+        <style>
+          @media (max-width:480px) {
+            .history_eat{
+              font-size: 16px;
+            }
+          }
+          @media (max-width:380px) {
+            .tracking_txt p{
+              font-size: 14px;
+            }
+          }
+        </style>
+        <div style="max-width: 100%; height: 40vh; display: flex;">
+          <canvas id="caloriesChart" style="min-width: 60vw; max-width: 100%; padding: 0px 12px;"></canvas>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

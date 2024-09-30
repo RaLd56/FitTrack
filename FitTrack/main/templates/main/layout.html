@@ -19,9 +19,9 @@
     {% endblock %}
     
 
-    <div class="mt-auto">
+    <div class="footer mt-auto w-full">
       <div class="flex gap-2 border-t border-[#223749] bg-[#182734] px-4 pb-3 pt-2">
-        <a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/tracking' %}bg-[#1979e6]{% endif %}" href="{% url 'tracking' %}">
+        <a class="layout_txt flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/tracking' %}bg-[#1979e6]{% endif %}" href="{% url 'tracking' %}">
           <div class="text-white flex h-8 items-center justify-center" data-icon="House" data-size="24px" data-weight="fill">
             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
               <path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z"></path>
@@ -30,7 +30,7 @@
           <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]">Обзор</p>
         </a>
     
-        <a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/nutrition' or request.path == '/add_meal' %}bg-[#1979e6]{% endif %}" href="{% url 'nutrition' %}">
+        <a class="layout_txt flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/nutrition' or request.path == '/add_meal' %}bg-[#1979e6]{% endif %}" href="{% url 'nutrition' %}">
           <div class="text-white flex h-8 items-center justify-center" data-icon="ChartLine" data-size="24px" data-weight="regular">
             <svg width="64" height="64" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full">
               <g fill="currentColor">
@@ -41,7 +41,7 @@
           <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]">Питание</p>
         </a>
     
-        <a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/workouts' or request.path == '/add_workout' %}bg-[#1979e6]{% endif %}" href="{% url 'workouts' %}">
+        <a class="layout_txt flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/workouts' or request.path == '/add_workout' %}bg-[#1979e6]{% endif %}" href="{% url 'workouts' %}">
           <div class="text-white flex h-8 items-center justify-center" data-icon="Trophy" data-size="24px" data-weight="regular">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full">
               <g fill="currentColor">
@@ -52,7 +52,7 @@
           <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]">Тренировки</p>
         </a>
     
-        <a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/profile' %}bg-[#1979e6]{% endif %}" href="{% url 'profile' %}">
+        <a class="layout_txt flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white {% if request.path == '/profile' %}bg-[#1979e6]{% endif %}" href="{% url 'profile' %}">
           <div class="text-white flex h-8 items-center justify-center" data-icon="UserCircle" data-size="24px" data-weight="regular">
             <svg width="32" height="32" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full">
               <g fill="currentColor">
@@ -62,9 +62,27 @@
           </div>
           <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]">Профиль</p>
         </a>
+        <style>
+          @media (max-width:480px) {
+            .layout_txt p{
+              font-size: 10px;
+            }
+          }
+          @media (max-width:380px) {
+            .layout_txt p{
+              font-size: 8px;
+            }
+          }
+        </style>
       </div>
-      <div```html
-        class="h-5 bg-[#182734]"></div>
-      </div>
+      <div```html class="h-5 bg-[#182734]"></div>
+    </div>
+    <style>
+      .footer{
+        bottom: 0;
+        position: relative;
+        margin-top: auto;
+      }
+    </style>
   </body>
 </html>

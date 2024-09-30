@@ -22,34 +22,115 @@
 
       </div>
       <div class="@container">
-        <div class="@[480px]:px-4 @[480px]:py-3">
+        <div class="@[480px] @[480px]">
           <div
-            class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#101418] @[480px]:rounded-xl min-h-80"
-            style='background-image: url("https://cdn.usegalileo.ai/sdxl10/c2d14eb0-add7-4338-922d-f2e4b927ba6c.png");'
+            class="bg-center bg-no-repeat bg-cover flex flex-col overflow-hidden bg-[#111922] min-h-[218px] mx-auto sm:min-h-[320px]"
+            style='background-image: url("https://i.pinimg.com/originals/84/55/cc/8455cc4c5d46d82c5a9cbf558ce2be34.png");'
           ></div>
         </div>
       </div>
-      <h2 class="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Добро пожаловать в FitTrack!</h2>
+      <h2 class="text-white tracking-light text-[20px] sm:text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5 max-w-[405px] mx-auto sm:max-w-full">Добро пожаловать в FitTrack!</h2>
       <p class="text-white text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
-        Вам на почту было отправлено сообщение. Проверьте входящие и введите код-подтверждение
+        Вам на почту было отправлено сообщение. Проверьте входящие и введите код-подтверждение.
       </p>
       <form method="post">
         {% csrf_token %}
-        <div class="row">
-            <input type="text" name="code" placeholder="Enter your verification code" required style="width: 100%; height: 45px; padding: 0 15px; border-radius: 8px; border: 1px solid lightgrey; font-size: 16px; transition: border-color 0.3s ease, box-shadow 0.3s ease; margin-bottom: 10px">
-        </div>
-        <div class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#f0f2f5] text-[#111518] text-base font-bold leading-normal tracking-[0.015em]"
+        <div class="row flex justify-center">
+            <input class="email_inpt" type="text" name="code" placeholder="Enter your verification code" required style="width: 50%; border-radius: 8px; border: 1px solid lightgrey; font-size: 16px; transition: border-color 0.3s ease, box-shadow 0.3s ease; margin-bottom: 10px;">
+            <style>
+              .email_inpt{
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              @media (max-width: 480px) {
+                /* Стили для мобильных устройств */
+                .email_inpt::placeholder{
+                  font-size: 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .email_inpt{
+                  padding: 8px 10px;
+                }
+              }
+              @media (max-width: 380px) {
+                /* Стили для мобильных устройств */
+                .email_inpt::placeholder{
+                  font-size: 8px;
+                  display: flex;
+                  align-items: center;
+                }
+
+                .email_inpt{
+                  padding: 3px 3px;
+                }
+              }
+            </style>
+          </div>
+        <div class="email_post flex mx-auto min-w-[84px] max-w-[50%] cursor-pointer items-center justify-center overflow-hidden rounded-xl py-3 px-5 bg-[#f0f2f5] text-[#111518] text-base font-bold leading-normal tracking-[0.015em]"
         >
           <input type="submit" value="Подтвердить">
         </div>
+        <style>
+          .email_post{
+            margin-bottom: 10px;
+          }
+          .email_post:hover{
+            transition-duration: 250ms;
+            background-color: #d9dbdf;
+          }
+          .email_post:focus{
+            transition-duration: 250ms;
+            background-color: #d9dbdf;
+          }
+          @media (max-width: 480px){
+            .email_post{
+              font-size: 12px;
+              padding: 10px 3px;
+            }
+          }
+          @media (max-width: 380px){
+            .email_post{
+              font-size: 8px;
+              padding: 8px 3px;
+            }
+          }
+        </style>
         {% if error %}
           <p>{{ error }}</p>
         {% endif %}
-        <div class="flex justify-center">
+        <div class="email_return_post_btn flex justify-center">
           <button
-            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-[#27303a] text-white text-base font-bold leading-normal tracking-[0.015em] grow"
+            class="max-w-[50%] flex min-w-[84px] lg:max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl py-3 px-5 bg-[#27303a] text-white text-base font-bold leading-normal tracking-[0.015em] grow"
           >
-            <span class="truncate">Отправить еще раз</span>
+            <span class="truncate email_return_post">Отправить еще раз</span>
+            <style>
+              .email_return_post_btn button:hover{
+                transition-duration: 250ms;
+                background-color: #1d252e;
+              }
+              .email_return_post_btn button:focus{
+                transition-duration: 250ms;
+                background-color: #1d252e;
+              }
+              @media (max-width: 480px){
+                .email_return_post{
+                  font-size: 12px;
+                  margin: 10px 0px;
+                }
+              }
+              @media (max-width: 380px){
+                .email_return_post{
+                  font-size: 8px;
+                  margin: 8px 0px;
+                }
+              }
+            </style>
           </button>
         </div>
     </form>
